@@ -11,6 +11,7 @@
                 <CryptoCurrencyCard
                     v-for="asset in assets"
                     :key="asset.id"
+                    :id="asset.id"
                     :name="asset.name"
                     :symbol="asset.symbol"
                     :image="asset.image"

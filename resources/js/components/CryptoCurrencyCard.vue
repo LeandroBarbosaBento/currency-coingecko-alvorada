@@ -1,6 +1,6 @@
 <template>
     <div
-        class="w-full sm:max-w-sm md:max-w-lg bg-gray-800 p-4 sm:p-6 rounded-2xl shadow-2xl text-white transform transition duration-500 hover:scale-105"
+        class="w-full sm:max-w-sm md:max-w-lg bg-gray-800 p-4 sm:p-6 rounded-2xl shadow-2xl text-white transform transition duration-500 hover:scale-105 flex flex-col justify-between"
     >
         <div class="flex items-center space-x-3 sm:space-x-4">
             <img
@@ -68,13 +68,19 @@
             </div>
         </div>
         <div
-            class="border-t border-gray-700 mt-4"
+            class="border-t border-gray-700 mt-4 flex flex-col gap-3"
         >
             <button
-                class="w-full mt-4 sm:mt-6 bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 sm:py-3 rounded-lg shadow-md transition duration-300 cursor-pointer"
+                class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 sm:py-3 rounded-lg shadow-md transition duration-300 cursor-pointer"
             >
                 Favorite
             </button>
+            <Link
+                class="w-full bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 sm:py-3 rounded-lg shadow-md transition duration-300 cursor-pointer text-center"
+                :href="route('assets.show' , { id: id })"
+            >
+                View Details
+            </Link>
         </div>
 
 
@@ -82,7 +88,12 @@
 </template>
 <script setup lang="ts">
 import { computed, defineProps } from 'vue';
+import { Link } from '@inertiajs/vue3';
 const props = defineProps({
+    id: {
+        type: Number,
+        required: true,
+    },
     name: {
         type: String,
         required: true,
