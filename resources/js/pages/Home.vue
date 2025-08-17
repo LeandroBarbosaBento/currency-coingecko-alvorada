@@ -4,21 +4,32 @@
             Featured Cryptocurrencies
         </h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            <CryptoCurrencyCard
-                v-for="i in 10"
-                :key="i"
-                name="Bitcoin"
-                symbol="BTC"
-                image="https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1696501400"
-                price="$67,500.00"
-                priceChange="3.5%"
-                marketCap="$1.3 Trillion"
-                volume="$30 Billion"
-            />
+            <template v-if="assets.length === 0">
+                <p>No assets available.</p>
+            </template>
+            <template v-else>
+                <CryptoCurrencyCard
+                    v-for="asset in assets"
+                    :key="asset.id"
+                    :name="asset.name"
+                    :symbol="asset.symbol"
+                    :image="asset.image"
+                    :price="asset.current_price"
+                    :priceChange="asset.price_change_percentage_24h"
+                    :volume="asset.total_volume"
+                />
+            </template>
+
         </div>
     </Base>
 </template>
 <script setup lang="ts">
 import CryptoCurrencyCard from '@/components/CryptoCurrencyCard.vue';
 import Base from '@/layout/Base.vue';
+import { Asset } from '@/types';
+
+defineProps<{
+    assets: Asset;
+}>();
+
 </script>
