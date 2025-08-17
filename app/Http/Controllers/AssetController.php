@@ -22,9 +22,17 @@ class AssetController extends Controller
         ]);
     }
 
-    public function show($id)
+    public function show(string $id)
     {
+        $assetDetails = $this->coinGeckoService->getAssetDetails($id);
 
+        if (empty($assetDetails)) {
+            abort(404);
+        }
+
+        return Inertia::render('AssetDetails', [
+            'asset' => $assetDetails,
+        ]);
     }
 
 

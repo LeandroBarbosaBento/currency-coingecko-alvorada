@@ -24,4 +24,13 @@ class CoinGeckoService
         });
     }
 
+    public function getAssetDetails(string $id): array
+    {
+        return Cache::remember("coingecko_asset_{$id}", self::CACHE_TTL, function () use ($id) {
+            $response = Http::baseUrl(self::BASE_URL)->get("coins/{$id}");
+
+            return $response->json();
+        });
+    }
+
 }
