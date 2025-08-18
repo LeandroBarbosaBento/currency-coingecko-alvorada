@@ -76,7 +76,7 @@
                     'bg-red-500 hover:bg-red-600': isFavorite,
                     'bg-green-500 hover:bg-green-600': !isFavorite
                 }"
-                @click="isFavorite ? $emit('remove-favorite', id) : $emit('mark-favorite', id)"
+                @click="onButtonClick(id)"
             >
                 {{ isFavorite ? 'Remove from Favorites' : 'Add to Favorites' }}
             </button>
@@ -94,6 +94,11 @@
 <script setup lang="ts">
 import { computed, defineProps } from 'vue';
 import { Link } from '@inertiajs/vue3';
+import {
+    markAssetAsFavorite,
+    unmarkAssetAsFavorite
+} from '@/service';
+
 const props = defineProps({
     id: {
         type: String,
@@ -129,6 +134,7 @@ const props = defineProps({
     },
 });
 
+const $emit = defineEmits(['update-list']);
 const displayedPrice = computed(() => {
     return props.price.toLocaleString('en-US', {
         style: 'currency',
@@ -136,5 +142,21 @@ const displayedPrice = computed(() => {
         maximumFractionDigits: 2,
     });
 });
+
+const onButtonClick = async (id: string) => {
+    try {
+
+        if (props.isFavorite) {
+            await unmarkAssetAsFavorite(id);
+        } else {
+            await markAssetAsFavorite(id);
+        }
+
+        $emit('update-list');
+
+    } catch (error) {
+        console.error('Error toggling favorite status:', error);
+    }
+};
 
 </script>

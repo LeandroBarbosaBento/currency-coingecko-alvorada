@@ -35,3 +35,11 @@ export const unmarkAssetAsFavorite = async (assetId: string): Promise<void> => {
         throw new Error('Failed to unmark asset');
     }
 }
+
+export const listFavoriteAssets = async (): Promise<Asset[]> => {
+    const response = await fetch(`${API_BASE_URL}/api/favorites`);
+    if (!response.ok) {
+        throw new Error('Failed to fetch favorite assets');
+    }
+    return response.json();
+}

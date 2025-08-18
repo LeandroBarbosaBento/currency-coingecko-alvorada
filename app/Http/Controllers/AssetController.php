@@ -44,6 +44,10 @@ class AssetController extends Controller
     {
         $favoriteIds = Favorite::all()->pluck('asset_id')->toArray();
 
+        if (empty($favoriteIds)) {
+            return response()->json([], 200);
+        }
+
         $assets = $this->coinGeckoService->getMarketList($favoriteIds);
 
         return response()->json(AssetResource::collection($assets));
