@@ -4,22 +4,30 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Http\Requests\StoreFavoriteRequest;
+use App\Models\Favorite;
 
 class FavoriteController extends Controller
 {
-
-    public function index()
+    public function store(StoreFavoriteRequest $request)
     {
-        return Inertia::render('Favorites');
-    }
+        $favorite = Favorite::create([
+            'asset_id' => $request->assetId,
+        ]);
 
-    public function store(Request $request)
-    {
-        // Logic to store a favorite asset
+        return response()->json([
+            'message' => 'Favorite added successfully',
+            'favorite' => $favorite,
+        ], 201);
     }
 
     public function destroy($id)
     {
-        // Logic to remove a favorite asset by ID
+        $favorite = Favorite::findOrFail($id);
+        $favorite->delete();
+
+        return response()->json([
+            'message' => 'Favorite removed successfully',
+        ], 200);
     }
 }
