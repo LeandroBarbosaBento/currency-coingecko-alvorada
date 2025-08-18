@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\PagesController;
 
 Route::get('/', function () {

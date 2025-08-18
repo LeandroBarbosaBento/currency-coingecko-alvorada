@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Services\CoinGeckoService;
 use App\Http\Resources\AssetResource;
 use App\Models\Favorite;
+use App\Http\Requests\StoreFavoriteRequest;
 
 class AssetController extends Controller
 {
@@ -37,6 +38,37 @@ class AssetController extends Controller
         $assetDetails = new AssetResource($assetDetails);
 
         return response()->json($assetDetails);
+    }
+
+    public function listFavoriteAssets()
+    {
+        $favoriteIds = Favorite::all()->pluck('asset_id')->toArray();
+
+        $assets = $this->coinGeckoService->getMarketList($favoriteIds);
+
+        return response()->json(AssetResource::collection($assets));
+    }
+
+    public function markAsFavorite(StoreFavoriteRequest $request)
+    {
+        $favorite = Favorite::create([
+            'asset_id' => $request->asset_id,
+        ]);
+
+        return response()->json([
+            'message' => 'Favorite added successfully',
+            'favorite' => $favorite,
+        ], 201);
+    }
+
+    public function unmarkAsFavorite($id)
+    {
+        $favorite = Favorite::where('asset_id', $id)->first();
+        $favorite->delete();
+
+        return response()->json([
+            'message' => 'Favorite removed successfully',
+        ], 200);
     }
 
 
