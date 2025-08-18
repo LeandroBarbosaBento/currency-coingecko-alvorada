@@ -1,5 +1,5 @@
 <template>
-    <Base>
+    <Base :isLoading="isLoading">
         <h2 class="text-2xl sm:text-3xl font-bold mb-8 sm:mb-16">
             Featured Cryptocurrencies
         </h2>
@@ -28,9 +28,26 @@
 import CryptoCurrencyCard from '@/components/CryptoCurrencyCard.vue';
 import Base from '@/layout/Base.vue';
 import { Asset } from '@/types';
+import { onMounted, ref } from 'vue';
+import { listAssets } from '@/service';
 
-defineProps<{
-    assets: Asset;
-}>();
+const assets = ref<Asset[]>([]);
+const isLoading = ref<boolean>(true);
+
+const loadAssets = async () => {
+    try {
+        isLoading.value = true;
+        const response = await listAssets();
+        assets.value = response;
+    } catch (error) {
+        console.error('Error fetching assets:', error);
+    } finally {
+        isLoading.value = false;
+    }
+};
+
+onMounted(async () => {
+    await loadAssets();
+});
 
 </script>
