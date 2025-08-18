@@ -17,9 +17,8 @@ class AssetController extends Controller
     public function index()
     {
         $assets = $this->coinGeckoService->getMarketList();
-        return Inertia::render('Home', [
-            'assets' => $assets,
-        ]);
+
+        return response()->json($assets);
     }
 
     public function show(string $id)
@@ -30,9 +29,7 @@ class AssetController extends Controller
             abort(404);
         }
 
-        return Inertia::render('AssetDetails', [
-            'asset' => $assetDetails,
-        ]);
+        return response()->json($assetDetails);
     }
 
 
