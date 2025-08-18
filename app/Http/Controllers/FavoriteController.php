@@ -12,7 +12,7 @@ class FavoriteController extends Controller
     public function store(StoreFavoriteRequest $request)
     {
         $favorite = Favorite::create([
-            'asset_id' => $request->assetId,
+            'asset_id' => $request->asset_id,
         ]);
 
         return response()->json([
@@ -23,7 +23,7 @@ class FavoriteController extends Controller
 
     public function destroy($id)
     {
-        $favorite = Favorite::findOrFail($id);
+        $favorite = Favorite::where('asset_id', $id)->first();
         $favorite->delete();
 
         return response()->json([

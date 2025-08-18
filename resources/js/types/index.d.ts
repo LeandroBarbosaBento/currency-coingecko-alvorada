@@ -32,6 +32,7 @@ export interface Asset {
     fully_diluted_valuation: number | null;
     total_volume: number;
     high_24h: number;
+    is_favorite?: boolean;
     low_24h: number;
     price_change_24h: number;
     price_change_percentage_24h: number;

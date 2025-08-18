@@ -22,7 +22,7 @@ class StoreFavoriteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'asset_id' => 'required|integer|unique:favorites,asset_id',
+            'asset_id' => 'required|string|unique:favorites,asset_id',
         ];
     }
 }

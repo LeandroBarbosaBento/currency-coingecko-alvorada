@@ -71,9 +71,14 @@
             class="border-t border-gray-700 mt-4 flex flex-col gap-3"
         >
             <button
-                class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 sm:py-3 rounded-lg shadow-md transition duration-300 cursor-pointer"
+                class="w-full text-white font-bold py-2 sm:py-3 rounded-lg shadow-md transition duration-300 cursor-pointer"
+                :class="{
+                    'bg-red-500 hover:bg-red-600': isFavorite,
+                    'bg-green-500 hover:bg-green-600': !isFavorite
+                }"
+                @click="isFavorite ? $emit('remove-favorite', id) : $emit('mark-favorite', id)"
             >
-                Favorite
+                {{ isFavorite ? 'Remove from Favorites' : 'Add to Favorites' }}
             </button>
             <Link
                 class="w-full bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 sm:py-3 rounded-lg shadow-md transition duration-300 cursor-pointer text-center"
@@ -117,7 +122,11 @@ const props = defineProps({
     volume: {
         type: Number,
         required: true,
-    }
+    },
+    isFavorite: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const displayedPrice = computed(() => {

@@ -18,6 +18,9 @@
                     :price="asset.current_price"
                     :priceChange="asset.price_change_percentage_24h"
                     :volume="asset.total_volume"
+                    :isFavorite="asset.is_favorite"
+                    @mark-favorite="markAsFavorite"
+                    @remove-favorite="removeFromFavorites"
                 />
             </template>
 
@@ -29,7 +32,11 @@ import CryptoCurrencyCard from '@/components/CryptoCurrencyCard.vue';
 import Base from '@/layout/Base.vue';
 import { Asset } from '@/types';
 import { onMounted, ref } from 'vue';
-import { listAssets } from '@/service';
+import {
+    listAssets,
+    markAssetAsFavorite,
+    unmarkAssetAsFavorite
+} from '@/service';
 
 const assets = ref<Asset[]>([]);
 const isLoading = ref<boolean>(true);
@@ -43,6 +50,22 @@ const loadAssets = async () => {
         console.error('Error fetching assets:', error);
     } finally {
         isLoading.value = false;
+    }
+};
+
+const markAsFavorite = async (id: string) => {
+    try {
+        await markAssetAsFavorite(id);
+    } catch (error) {
+        console.error('Error removing favorite:', error);
+    }
+};
+
+const removeFromFavorites = async (id: string) => {
+    try {
+        await unmarkAssetAsFavorite(id);
+    } catch (error) {
+        console.error('Error removing favorite:', error);
     }
 };
 
