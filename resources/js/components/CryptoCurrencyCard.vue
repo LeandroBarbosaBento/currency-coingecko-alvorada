@@ -91,7 +91,7 @@ import { computed, defineProps } from 'vue';
 import { Link } from '@inertiajs/vue3';
 const props = defineProps({
     id: {
-        type: Number,
+        type: String,
         required: true,
     },
     name: {
