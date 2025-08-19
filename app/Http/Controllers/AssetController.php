@@ -35,8 +35,6 @@ class AssetController extends Controller
     {
         $assetDetails = $this->coinGeckoService->getAssetDetails($id);
 
-        $assetDetails = new AssetResource($assetDetails);
-
         return response()->json($assetDetails);
     }
 

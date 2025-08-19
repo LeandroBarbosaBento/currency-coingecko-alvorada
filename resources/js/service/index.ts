@@ -43,3 +43,11 @@ export const listFavoriteAssets = async (): Promise<Asset[]> => {
     }
     return response.json();
 }
+
+export const getAssetDetails = async (assetId: string): Promise<Asset> => {
+    const response = await fetch(`${API_BASE_URL}/api/assets/${assetId}`);
+    if (!response.ok) {
+        throw new Error('Failed to fetch asset details');
+    }
+    return response.json();
+}

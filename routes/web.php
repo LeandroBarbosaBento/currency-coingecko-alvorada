@@ -9,5 +9,5 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/', [PagesController::class, 'index'])->name('assets.index');
-Route::get('/assets/{id}', [PagesController::class, 'show'])->name('assets.show');
+Route::get('/assets/{id}', [PagesController::class, 'showAsset'])->name('assets.show');
 Route::get('/favorites',[PagesController::class, 'listFavorites'])->name('favorites.index');
