@@ -51,3 +51,11 @@ export const getAssetDetails = async (assetId: string): Promise<Asset> => {
     }
     return response.json();
 }
+
+export const loadAssetChartData = async (assetId: string): Promise<any> => {
+    const response = await fetch(`${API_BASE_URL}/api/assets/${assetId}/chart`);
+    if (!response.ok) {
+        throw new Error('Failed to fetch asset chart data');
+    }
+    return response.json();
+}

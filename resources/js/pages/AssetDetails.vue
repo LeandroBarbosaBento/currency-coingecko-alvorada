@@ -113,6 +113,12 @@
                         class="text-gray-300 text-sm"
                     ></span>
                 </p>
+
+                <div class="mt-4 overflow-y-auto">
+                    <CryptoPriceChart
+                        :asset-id="asset.id"
+                    />
+                </div>
             </div>
 
             <div class="p-6 bg-gray-700 mt-4">
@@ -168,6 +174,7 @@ import { Asset } from '@/types';
 import { onMounted, ref } from 'vue';
 import { getAssetDetails } from '@/service';
 import Base from '@/layout/Base.vue';
+import CryptoPriceChart from '@/components/CryptoPriceChart.vue';
 
 const asset = ref<Asset | null>(null);
 const isLoading = ref<boolean>(false);
