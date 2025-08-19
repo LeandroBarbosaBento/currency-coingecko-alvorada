@@ -10,6 +10,10 @@ There is a page that lists all 10 assets and another page that shows only the us
 
 Additionally, there is a detail page, where users can view more information about a specific cryptocurrency along with a chart displaying its price history.
 
+## Main dependencies
+* PHP 8.4
+* Node JS v22.18
+
 
 ## How to run the project
 
@@ -29,9 +33,6 @@ npm run dev
 ```
 
 
-## Main dependencies
-* PHP 8.4
-* Node JS v22.18
 
 ## Extras
 * Historical chart for an specific cryptocurrency on the details page.
