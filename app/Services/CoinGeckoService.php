@@ -46,13 +46,16 @@ class CoinGeckoService
         });
     }
 
-     public function loadAssetChartData(string $id): array
+    public function loadAssetChartData(string $id): array
     {
-        $response = Http::baseUrl(self::BASE_URL)->get("coins/{$id}/market_chart", [
-            'vs_currency' => 'usd',
-            'days' => 7,
-        ]);
-        return $response->json();
+        return Cache::remember("coingecko_asset_chart_{$id}", self::CACHE_TTL, function () use ($id) {
+            $response = Http::baseUrl(self::BASE_URL)->get("coins/{$id}/market_chart", [
+                'vs_currency' => 'usd',
+                'days' => 7,
+            ]);
+            return $response->json();
+        });
+
     }
 
 }
