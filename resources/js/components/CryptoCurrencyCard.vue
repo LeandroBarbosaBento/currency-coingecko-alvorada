@@ -161,6 +161,7 @@ const props = defineProps({
 const $emit = defineEmits([
     'marked-as-favorite',
     'remove-from-favorites',
+    'error'
 ]);
 
 const isLoading = ref(false);
@@ -185,6 +186,7 @@ const onButtonClick = async (id: string) => {
         }
     } catch (error) {
         console.error('Error toggling favorite status:', error);
+        $emit('error', 'Something went wrong while updating favorite status.');
     } finally {
         isLoading.value = false;
     }

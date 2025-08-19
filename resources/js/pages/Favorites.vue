@@ -20,9 +20,17 @@
                     :volume="asset.total_volume"
                     :isFavorite="asset.is_favorite"
                     @remove-from-favorites="removeFromFavorites"
+                    @error="handleError"
                 />
             </template>
         </div>
+
+        <Notification
+            v-if="notification.isVisible"
+            :type="notification.type"
+            :message="notification.message"
+            @close="notification.isVisible = false"
+        />
     </Base>
 </template>
 <script setup lang="ts">
@@ -32,10 +40,15 @@ import Base from '@/layout/Base.vue';
 import { ref, onMounted } from 'vue';
 import { Asset } from '@/types';
 import { listFavoriteAssets } from '@/service';
+import Notification from '@/components/Notification.vue';
 
 const isLoading = ref<boolean>(true);
-
 const favoriteAssets = ref<Asset[]>([]);
+const notification = ref({
+    isVisible: false,
+    type: '',
+    message: '',
+});
 
 const loadFavorites = async () => {
     try {
@@ -44,16 +57,29 @@ const loadFavorites = async () => {
         favoriteAssets.value = response;
     } catch (error) {
         console.error('Error fetching favorite assets:', error);
+        notification.value.isVisible = true;
+        notification.value.type = 'error';
+        notification.value.message = 'Failed to load favorite assets. Please try again later.';
     } finally {
         isLoading.value = false;
     }
 };
 
 const removeFromFavorites = (id: string) => {
+    notification.value.isVisible = true;
+    notification.value.type = 'success';
+    notification.value.message = "Removed from favorites successfully!";
+
     const index = favoriteAssets.value.findIndex((asset:Asset)=> asset.id === id);
     if (index !== -1) {
         favoriteAssets.value.splice(index, 1);
     }
+};
+
+const handleError = (message: string) => {
+    notification.value.isVisible = true;
+    notification.value.type = 'error';
+    notification.value.message = message;
 };
 
 onMounted(async () => {

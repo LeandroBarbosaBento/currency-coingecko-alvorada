@@ -21,14 +21,24 @@
                     :isFavorite="asset.is_favorite"
                     @marked-as-favorite="markAsFavorite"
                     @remove-from-favorites="removeFromFavorites"
+                    @error="handleError"
                 />
             </template>
 
         </div>
+
+        <Notification
+            v-if="notification.isVisible"
+            :type="notification.type"
+            :message="notification.message"
+            @close="notification.isVisible = false"
+        />
+
     </Base>
 </template>
 <script setup lang="ts">
 import CryptoCurrencyCard from '@/components/CryptoCurrencyCard.vue';
+import Notification from '@/components/Notification.vue';
 import Base from '@/layout/Base.vue';
 import { Asset } from '@/types';
 import { onMounted, ref } from 'vue';
@@ -36,6 +46,11 @@ import { listAssets } from '@/service';
 
 const assets = ref<Asset[]>([]);
 const isLoading = ref<boolean>(true);
+const notification = ref({
+    isVisible: false,
+    type: '',
+    message: '',
+});
 
 const loadAssets = async () => {
     try {
@@ -44,12 +59,20 @@ const loadAssets = async () => {
         assets.value = response;
     } catch (error) {
         console.error('Error fetching assets:', error);
+        notification.value.isVisible = true;
+        notification.value.type = 'error';
+        notification.value.message = 'Failed to load assets. Please try again later.';
     } finally {
         isLoading.value = false;
     }
 };
 
 const markAsFavorite = (id: string) => {
+
+    notification.value.isVisible = true;
+    notification.value.type = 'success';
+    notification.value.message = "Marked as favorite successfully!";
+
     const asset = assets.value.find((asset:Asset) => asset.id === id);
     if (asset) {
         asset.is_favorite = true;
@@ -57,12 +80,22 @@ const markAsFavorite = (id: string) => {
 };
 
 const removeFromFavorites = (id: string) => {
+
+    notification.value.isVisible = true;
+    notification.value.type = 'success';
+    notification.value.message = "Removed from favorites successfully!";
+
     const asset = assets.value.find((asset:Asset) => asset.id === id);
     if (asset) {
         asset.is_favorite = false;
     }
 };
 
+const handleError = (message: string) => {
+    notification.value.isVisible = true;
+    notification.value.type = 'error';
+    notification.value.message = message;
+};
 
 
 onMounted(async () => {
