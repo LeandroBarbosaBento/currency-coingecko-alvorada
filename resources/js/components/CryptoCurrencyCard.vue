@@ -21,13 +21,7 @@
         <div class="mt-4 sm:mt-6 flex flex-col items-start">
             <p class="text-gray-400 text-base sm:text-lg">Current Price</p>
             <div class="flex flex-col mt-1 gap-x-2 gap-y-1">
-                <p
-                    class="text-xl sm:text-3xl md:text-5xl font-extrabold text-green-400"
-                    :class="{
-                        'text-green-400': priceChange >= 0,
-                        'text-red-400': priceChange < 0
-                    }"
-                >
+                <p class="text-xl sm:text-3xl md:text-5xl font-extrabold text-white">
                     {{ displayedPrice }}
                 </p>
                 <span
@@ -134,7 +128,10 @@ const props = defineProps({
     },
 });
 
-const $emit = defineEmits(['update-list']);
+const $emit = defineEmits([
+    'marked-as-favorite',
+    'remove-from-favorites',
+]);
 const displayedPrice = computed(() => {
     return props.price.toLocaleString('en-US', {
         style: 'currency',
@@ -145,15 +142,13 @@ const displayedPrice = computed(() => {
 
 const onButtonClick = async (id: string) => {
     try {
-
         if (props.isFavorite) {
             await unmarkAssetAsFavorite(id);
+            $emit('remove-from-favorites', id);
         } else {
             await markAssetAsFavorite(id);
+            $emit('marked-as-favorite', id);
         }
-
-        $emit('update-list');
-
     } catch (error) {
         console.error('Error toggling favorite status:', error);
     }

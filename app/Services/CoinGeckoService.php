@@ -10,24 +10,32 @@ class CoinGeckoService
     private const BASE_URL = 'https://api.coingecko.com/api/v3/';
     private const CACHE_TTL = 60; // 60 seconds
 
-    public function getMarketList(array $ids = []): array
+    public function getMarketList(): array
     {
-        $query = [
+        return Cache::remember(
+            'coingecko_assets_list',
+            self::CACHE_TTL,
+            function () {
+                $response = Http::baseUrl(self::BASE_URL)->get('coins/markets', [
+                    'vs_currency' => 'usd',
+                    'order' => 'market_cap_desc',
+                    'per_page' => 10,
+                    'page' => 1,
+                ]);
+                return $response->json();
+        });
+    }
+
+    public function listFavoriteAssets(array $favoriteIds): array
+    {
+        $response = Http::baseUrl(self::BASE_URL)->get('coins/markets', [
             'vs_currency' => 'usd',
             'order' => 'market_cap_desc',
             'per_page' => 10,
             'page' => 1,
-        ];
-        if(!empty($ids)) {
-            $query['ids'] = implode(',', $ids);
-        }
-        return Cache::remember(
-            'coingecko_assets_list',
-            self::CACHE_TTL,
-            function () use ($query) {
-                $response = Http::baseUrl(self::BASE_URL)->get('coins/markets', $query);
-                return $response->json();
-        });
+            'ids' => implode(',', $favoriteIds),
+        ]);
+        return $response->json();
     }
 
     public function getAssetDetails(string $id): array

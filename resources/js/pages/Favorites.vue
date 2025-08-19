@@ -19,7 +19,7 @@
                     :priceChange="asset.price_change_percentage_24h"
                     :volume="asset.total_volume"
                     :isFavorite="asset.is_favorite"
-                    @update-list="loadFavorites"
+                    @remove-from-favorites="removeFromFavorites"
                 />
             </template>
         </div>
@@ -46,6 +46,13 @@ const loadFavorites = async () => {
         console.error('Error fetching favorite assets:', error);
     } finally {
         isLoading.value = false;
+    }
+};
+
+const removeFromFavorites = (id: string) => {
+    const index = favoriteAssets.value.findIndex((asset:Asset)=> asset.id === id);
+    if (index !== -1) {
+        favoriteAssets.value.splice(index, 1);
     }
 };
 

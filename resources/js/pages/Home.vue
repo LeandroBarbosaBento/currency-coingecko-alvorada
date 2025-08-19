@@ -19,7 +19,8 @@
                     :priceChange="asset.price_change_percentage_24h"
                     :volume="asset.total_volume"
                     :isFavorite="asset.is_favorite"
-                    @update-list="loadAssets"
+                    @marked-as-favorite="markAsFavorite"
+                    @remove-from-favorites="removeFromFavorites"
                 />
             </template>
 
@@ -47,6 +48,22 @@ const loadAssets = async () => {
         isLoading.value = false;
     }
 };
+
+const markAsFavorite = (id: string) => {
+    const asset = assets.value.find((asset:Asset) => asset.id === id);
+    if (asset) {
+        asset.is_favorite = true;
+    }
+};
+
+const removeFromFavorites = (id: string) => {
+    const asset = assets.value.find((asset:Asset) => asset.id === id);
+    if (asset) {
+        asset.is_favorite = false;
+    }
+};
+
+
 
 onMounted(async () => {
     await loadAssets();

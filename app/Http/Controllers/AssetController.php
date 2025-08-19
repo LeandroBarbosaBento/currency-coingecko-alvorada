@@ -24,9 +24,9 @@ class AssetController extends Controller
         $assets = $this->coinGeckoService->getMarketList();
 
         $assets = collect($assets)->map(function ($asset) use ($favoriteIds) {
-            $asset['is_favorite'] = in_array($asset['id'], $favoriteIds);
-            return $asset;
-        });
+                $asset['is_favorite'] = in_array($asset['id'], $favoriteIds);
+                return $asset;
+            });
 
         return response()->json(AssetResource::collection($assets));
     }
@@ -48,7 +48,12 @@ class AssetController extends Controller
             return response()->json([], 200);
         }
 
-        $assets = $this->coinGeckoService->getMarketList($favoriteIds);
+        $assets = $this->coinGeckoService->listFavoriteAssets($favoriteIds);
+
+        $assets = collect($assets)->map(function ($asset) use ($favoriteIds) {
+            $asset['is_favorite'] = in_array($asset['id'], $favoriteIds);
+            return $asset;
+        });
 
         return response()->json(AssetResource::collection($assets));
     }

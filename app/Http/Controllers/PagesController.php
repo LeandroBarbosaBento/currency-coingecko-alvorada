@@ -24,7 +24,4 @@ class PagesController extends Controller
         return Inertia::render('AssetDetails');
     }
 
-
-
-
 }
