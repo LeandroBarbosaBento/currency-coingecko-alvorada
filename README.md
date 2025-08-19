@@ -13,13 +13,16 @@ Additionally, there is a detail page, where users can view more information abou
 
 ## How to run the project
 
-In one terminal run the following line: 
+Set up the database connection in the .env file.
+
+In one terminal run: 
 
 ```bash
+php artisan migrate
 php artisan octane:start --host=0.0.0.0 --port=8000
 ```
 
-In another terminal run the following line: 
+In another terminal run: 
 
 ```bash
 npm run dev
