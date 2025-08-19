@@ -18,4 +18,5 @@ Route::group(['prefix' => 'favorites'], function () {
 Route::group(['prefix' => 'assets'], function () {
     Route::get('/', [AssetController::class, 'index']);
     Route::get('/{id}', [AssetController::class, 'show']);
+    Route::get('/{id}/chart', [AssetController::class, 'loadAssetChartData']);
 });

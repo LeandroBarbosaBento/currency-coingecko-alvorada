@@ -46,4 +46,13 @@ class CoinGeckoService
         });
     }
 
+     public function loadAssetChartData(string $id): array
+    {
+        $response = Http::baseUrl(self::BASE_URL)->get("coins/{$id}/market_chart", [
+            'vs_currency' => 'usd',
+            'days' => 7,
+        ]);
+        return $response->json();
+    }
+
 }
