@@ -13,6 +13,19 @@ Additionally, there is a detail page, where users can view more information abou
 
 ## How to run the project
 
+In one terminal run the following line: 
+
+```bash
+php artisan octane:start --host=0.0.0.0 --port=8000
+```
+
+In another terminal run the following line: 
+
+```bash
+npm run dev
+```
+
+
 ## Main dependencies
 * PHP 8.4
 * Node JS v22.18
